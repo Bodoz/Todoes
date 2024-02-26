@@ -1,10 +1,36 @@
 <template>
-i was here (@ç@)
+    <v-card
+        class="mx-auto"
+        max-width="300"
+    >
+      <v-list :items="todoes"
+              item-title="todo"
+              item-value="id"
+      ></v-list>
+    </v-card>
 
-  <v-btn>
-    Button
-  </v-btn>
-
-  <v-icon icon="mdi-emoticon-angry-outline"></v-icon>
-  <v-icon icon="$vuetify"></v-icon>
+  <ul>
+    <li v-for="todo in todoes"
+      :key="todo.id"
+    >{{ todo.todo }}</li>
+  </ul>
 </template>
+
+<script>
+import {mapState} from "pinia";
+import {useTodoesStore} from "@/stores/todoes.js";
+
+const store = useTodoesStore()
+export default {
+  data: () => ({
+    //
+  }),
+  computed: {
+    ...mapState(useTodoesStore, ['todoes']),
+  },
+  mounted() {
+    store.fetchTodoes()
+  }
+}
+
+</script>

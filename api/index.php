@@ -7,7 +7,6 @@ require_once 'db.php';
 //elenco dei todo
 $f3->route('GET /todoes',
     function($f3, $params){
-        echo 'Hello, qua world';
         echo json_encode([
             'result' => true,
             'data' => get_todoes(),
@@ -19,7 +18,6 @@ $f3->route('GET /todoes',
 //elenco dei todo
 $f3->route('GET /todoes/@id',
     function($f3, $params){
-        echo 'Hello, qua world';
         $todo = get_todo($params['id']);
         if ($todo){
             $r = [
