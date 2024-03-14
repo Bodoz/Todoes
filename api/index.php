@@ -1,6 +1,7 @@
 <?php
 header('Content-type: application/json; charset=UTF=8');
 
+sleep(1);
 $f3 = require('lib/base.php');
 require_once 'db.php';
 
@@ -64,18 +65,19 @@ $f3->route('POST /todoes',
 $f3->route('PUT /todoes/@id',
     function($f3, $params){
         $data = json_decode(file_get_contents('php://input'), true);
-        if($params['id'] > '' and $data['todo'] != '' and $data['id_list'] > 0){
+        # var_export($data); die;
+        if ($params['id'] > 0 and $data['todo'] != '') {  # and $data['id_list'] > 0
             $todo = save_todo($params['id'], $data['todo'], $data['done'] ?? 0, $data['id_list']);
             $r = [
                 'result' => true,
                 'data' => [$todo],
-                'msg' => 'ok'
+                'msg' => 'Corretto'
             ];
             http_response_code(201);
-        }else{
+        } else {
             $r = [
                 'result' => false,
-                'data' => [],
+                'data' => [null],
                 'msg' => 'non è possibile'
             ];
             http_response_code(404);

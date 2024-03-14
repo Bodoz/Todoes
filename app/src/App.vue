@@ -1,9 +1,39 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+export default{
+  data() {
+    return {
+      links: [
+        {to: "/", text: "Home"},
+        {to: "/about", text: "About"},
+        {to: "/todoes", text: "Todoes"},
+      ]
+    }
+  }
+}
 </script>
 
+
 <template>
+    <v-layout class="rounded rounded-md">
+      <v-app-bar title="Application bar"></v-app-bar>
+
+      <v-navigation-drawer>
+        <v-list v-for="link in links" :key="link.to">
+          <v-list-item>
+          <RouterLink :to="link.to">{{link.text}}</RouterLink>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+        <RouterView />
+      </v-main>
+    </v-layout>
+
+    <!--
   <header>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
@@ -18,7 +48,10 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
   </header>
 
-  <RouterView />
+  <div style="border: 1px dashed red">
+    <RouterView />
+  </div>
+  -->
 </template>
 
 <style scoped>
