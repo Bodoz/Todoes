@@ -36,14 +36,22 @@ export const useTodoesStore = defineStore("todo",{
             this.todoes[this.todoes.indexOf(x => x.id === todo.id)] = todo
             t.isLoading = false
         },
-        async confirmDeleteTodo(id){
+        async deleteTodo(id){
             const t = this.todoes.find(x => x.id === id)
             t.isLoading = true
             const data = await axios.delete(`api/todoes/${id}`)
-            if (data.data.data.result) {
-                this.todoes.split(this.todoes.indexOf(x => x.id === todo.id), 1)
+            console.log(data.data)
+            if (data.data.result) {
+                //this.todoes.splice(this.todoes.indexOf(x => x.id === todo.id), 1)
+                this.todoes = this.todoes.filter(x => x.id !== id)
             }
             t.isLoading = false
+        },
+        async newTodo(todo) {
+            const data = await axios.post(`api/todoes/`, {todo, id_list: 1})
+            if(data.data.result){
+                this.todoes.push(data.data.data[0])
+            }
         },
     },
 })

@@ -1,7 +1,7 @@
 <?php
 header('Content-type: application/json; charset=UTF=8');
 
-sleep(1);
+//sleep(1);
 $f3 = require('lib/base.php');
 require_once 'db.php';
 

@@ -2,8 +2,13 @@
   <div>
     <v-card
         class="mx-auto"
-        max-width="300"
+        max-width="500"
     >
+      <v-btn color="primary"
+        @click="addTodo()"
+      >
+        <v-icon icon="mdi-plus"></v-icon>
+      </v-btn>
       <v-list>
         <v-list-item
             v-for="todo in todoes"
@@ -14,12 +19,12 @@
             :loading="todo.isLoading"
         >
           <template v-slot:prepend>
-            <v-list-item-action start>
+<!--            <v-list-item-action start>-->
               <v-checkbox-btn
                   v-model="todo.done"
                   @change="updateTodo(todo.id)"
               ></v-checkbox-btn>
-            </v-list-item-action>
+<!--            </v-list-item-action>-->
           </template>
           <v-list-item-title>{{ todo.todo }}</v-list-item-title>
           <v-progress-linear
@@ -28,11 +33,11 @@
             indeterminate>
           </v-progress-linear>
           <template v-slot:append>
-            <v-btn icon="mdi-edit" size="x-small"
-                   @change="">
+            <v-btn icon="mdi-pencil" size="x-small"
+                   @click.stop="alert(todo.id, todo.todo)">
             </v-btn>
             <v-btn icon="mdi-delete" size="x-small"
-                   @change="confirmDeleteTodo(todo.id)">
+                   @change.stop="confirmDeleteTodo(todo.id)">
             </v-btn>
           </template>
         </v-list-item>
@@ -61,14 +66,23 @@ export default {
     ...mapState(useTodoesStore, ['todoes']),
   },
   methods: {
-    ...mapActions(useTodoesStore, ['updateTodo']),
-    confirmDeleteTodo() {
-      confirm("u schure?") && deleteTodo(id)
+    ...mapActions(useTodoesStore, ['updateTodo', 'deleteTodo', 'newTodo']),
+
+    confirmDeleteTodo(id) {
+      confirm("u sure?") && this.deleteTodo(id)
     },
+    alert(){
+      alert(...arguments)
+      console.log(...arguments)
+    },
+    addTodo(){
+      let todo = prompt("Digita il nuovo impegno: ")
+      this.newTodo(todo)
+    }
   },
   created() {
     todoesStore.fetchTodoes()
-  }
+  },
 }
 
 </script>
