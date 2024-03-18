@@ -1,16 +1,20 @@
 import {defineStore} from "pinia";
 
 import axios from "axios"
+import {tr} from "vuetify/locale";
+
+let loadingLists = false
 
 export const useTodoesStore = defineStore("todo",{
     state: () => ({
         todoes: [],
+        lists: null,
     }),
-    getters: {
-        getTodoes(state){
-            return state.todoes
-        }
-    },
+    //getters: {
+    //    getTodoes(state){
+    //        return state.todoes
+    //    }
+    //},
     actions: {
         async fetchTodoes() {
             try{
@@ -51,6 +55,20 @@ export const useTodoesStore = defineStore("todo",{
             const data = await axios.post(`api/todoes/`, {todo, id_list: 1})
             if(data.data.result){
                 this.todoes.push(data.data.data[0])
+            }
+        },
+        async fetchLists() {
+            if(this.lists === null && loadingLists === false) {
+                loadingLists = true
+                try {
+                    const response = await axios.get('api/lists')
+                    this.lists = response.data.data
+                    console.log(response)
+                } catch (error) {
+                    alert(error)
+                    console.log(error)
+                }
+                loadingLists = false
             }
         },
     },

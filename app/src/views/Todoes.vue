@@ -33,9 +33,14 @@
             indeterminate>
           </v-progress-linear>
           <template v-slot:append>
-            <v-btn icon="mdi-pencil" size="x-small"
+<!--            <v-btn icon="mdi-pencil" size="x-small"
                    @click.stop="alert(todo.id, todo.todo)">
-            </v-btn>
+            </v-btn> -->
+            <todo-form
+                :id="todo.id"
+                :todo="todo.todo"
+                :list_id="todo.list_id"
+            ></todo-form>
             <v-btn icon="mdi-delete" size="x-small"
                    @change.stop="confirmDeleteTodo(todo.id)">
             </v-btn>
@@ -44,11 +49,13 @@
       </v-list>
     </v-card>
 
+<!--
   <ul>
     <li v-for="todo in todoes"
       :key="todo.id"
     >{{ todo.done }} {{ todo.todo }}</li>
   </ul>
+-->
 
   </div>
 </template>
@@ -56,9 +63,11 @@
 <script>
 import {mapActions, mapState} from "pinia";
 import {useTodoesStore} from "@/stores/todoes.js";
+import TodoForm from "@/components/TodoForm.vue";
 
 const todoesStore = useTodoesStore()
 export default {
+  components: {TodoForm},
   data: () => ({
     //
   }),
