@@ -3,7 +3,7 @@ $f3 = require('lib/base.php');
 require_once "db.php";
 header('Content-type: application/json; charset=UTF-8');
 
-// sleep(1);
+//sleep(1);
 
 //Elenco dei todo
 $f3->route(

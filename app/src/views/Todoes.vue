@@ -4,58 +4,68 @@
         class="mx-auto"
         max-width="500"
     >
-      <v-btn color="primary"
-        @click="addTodo()"
-      >
-        <v-icon icon="mdi-plus"></v-icon>
-      </v-btn>
+      <v-toolbar>
+        <template v-slot:prepend>
+          <v-icon icon="mdi-format-list-checks"></v-icon>
+        </template>
+        <v-toolbar-title> The best of all the worlds' to-do's list</v-toolbar-title>
+        <template v-slot:append>
+          <todo-form
+              :todo="todo"
+              @update=""
+              @opened=""
+              icon="mdi-plus"
+              title="Add a new to-do"
+              size="default"
+          ></todo-form>
+        </template>
+      </v-toolbar>
+
+<!--      key="todo.id"-->
+<!--      :value="todo.id"-->
+
       <v-list>
         <v-list-item
             v-for="todo in todoes"
-            key="todo.id"
-            :value="todo.id"
-            @click="todo.done = !todo.done; updateTodo(todo.id)"
+            @click="todo.done=!todo.done; updateTodo(todo.id)"
             :disabled="todo.isLoading"
             :loading="todo.isLoading"
         >
           <template v-slot:prepend>
-<!--            <v-list-item-action start>-->
               <v-checkbox-btn
                   v-model="todo.done"
                   @change="updateTodo(todo.id)"
               ></v-checkbox-btn>
-<!--            </v-list-item-action>-->
           </template>
-          <v-list-item-title>{{ todo.todo }}</v-list-item-title>
+
+          <v-list-item-title><b>{{ todo.todo }}</b> (<i>{{ todo.list }}</i>)</v-list-item-title>
           <v-progress-linear
             v-if="todo.isLoading"
             color="primary"
-            indeterminate>
-          </v-progress-linear>
+            indeterminate></v-progress-linear>
+
           <template v-slot:append>
-<!--            <v-btn icon="mdi-pencil" size="x-small"
-                   @click.stop="alert(todo.id, todo.todo)">
-            </v-btn> -->
-            <todo-form
-                :id="todo.id"
-                :todo="todo.todo"
-                :list_id="todo.list_id"
-            ></todo-form>
-            <v-btn icon="mdi-delete" size="x-small"
-                   @change.stop="confirmDeleteTodo(todo.id)">
-            </v-btn>
+            <v-list-item-action end>
+              <todo-form
+                  :todo="todo"
+                  @update="updateTodo(todo.id)"
+              ></todo-form>
+
+              <v-btn
+                  icon="mdi-delete"
+                  size="x-small"
+                  variant="tonal"
+                  color="orange"
+                  @change.stop="confirmDeleteTodo(todo.id)"
+              ></v-btn>
+            </v-list-item-action>
           </template>
         </v-list-item>
       </v-list>
+      <v-footer>
+        cose da far
+      </v-footer>
     </v-card>
-
-<!--
-  <ul>
-    <li v-for="todo in todoes"
-      :key="todo.id"
-    >{{ todo.done }} {{ todo.todo }}</li>
-  </ul>
--->
 
   </div>
 </template>

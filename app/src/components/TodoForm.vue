@@ -3,18 +3,23 @@
       <v-dialog
           v-model="dialog"
           max-width="600"
+          persistent
       >
         <template v-slot:activator="{ props: activatorProps }">
           <v-btn
-              size="x-small"
-              icon="mdi-pencil"
               v-bind="activatorProps"
+              variant="tonal"
+              color="primary"
+              density="default"
+              :size="size"
+              :icon="icon"
+              @click="$emit('opened')"
           ></v-btn>
         </template>
 
         <v-card
-            prepend-icon="mdi-pencil"
-            title="New or edit Todo"
+            :prepend-icon="icon"
+            :title="title"
         >
           <v-card-text>
             <v-row dense>
@@ -23,11 +28,10 @@
                   md="8"
               >
                 <v-text-field
-                    v-model="local_todo"
+                    v-model="todo.todo"
                     x-label="Type here your todoes*"
                     required
                 ></v-text-field>
-
               </v-col>
 
               <v-col
@@ -35,13 +39,12 @@
                   md="4"
               >
                 <v-select
-                    v-model="local_list_id"
+                    v-model="todo.list_id"
                     :items="lists"
                     item-title="list"
                     item-value="id"
                     x-label="List*"
                     required
-                    @update:model-value="console.log(local_list_id)"
                 ></v-select>
               </v-col>
             </v-row>
@@ -64,7 +67,8 @@
                 color="primary"
                 text="Save"
                 variant="tonal"
-                @click="saveTodo()"
+                @click="saveTodo"
+                :disable="!dataVerified"
             ></v-btn>
           </v-card-actions>
         </v-card>
@@ -81,23 +85,35 @@ const todoesStore = useTodoesStore()
 export default {
   name: "TodoForm",
   props: {
-    id: Number,
-    todo: String,
-    done: Boolean,
-    list_id: Number,
+    todo: Object,
+    icon: {
+      type: String,
+      default(){
+        return 'mdi-pencil'
+      }
+    },
+    title: {
+      type: String,
+      default(){
+        return "Modify this to-do"
+      }
+    },
+    size: {
+      type: String,
+      default(){
+        return 'x-small'
+      }
+    },
   },
-  //emits: [
-  //  'update:todo',
-  //  'update:done',
-  //  'update:list_id',
-  //],
+  emits: ['update', 'opened'],
   data: () => ({
-    local_todo: '',
-    local_list_id: 0,
     dialog: false,
   }),
   computed: {
     ...mapState(useTodoesStore, ['todoes', 'lists']),
+    dataVerified(){
+      return ths.todo.todo.trim() !== '' && this.todo.id_list > 0
+    }
   },
   methods: {
   //  ...mapActions(useTodoesStore, ['']),
