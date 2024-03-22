@@ -20,7 +20,7 @@ export const useTodoesStore = defineStore("todo",{
             try{
                 const data = await axios.get('api/todoes')
                 let todoes = data.data.data
-                for (let i in todoes) todoes[i].done = !!todoes[i].done
+                //for (let i in todoes) todoes[i].done = !!todoes[i].done
                 this.todoes = todoes
                 console.log(data)
             } catch(error) {
@@ -29,15 +29,11 @@ export const useTodoesStore = defineStore("todo",{
             }
         },
         async updateTodo(id) {
-            //console.log('TodoStore.action.updateTodo:',todo)
-            //console.log('TodoStore.actions.updateTodo:',id)
-            const t = this.todoes.find(x => x.id === id)
+            const ix = this.todoes.findIndex(x => x.id === id)
+            const t = this.todoes[ix]
             t.isLoading = true
-            //console.log(t)
             const data = await axios.put(`api/todoes/${id}`, t)
-            let todo = data.data.data[0] //FIXME: gestire errore se vuoto
-            console.log(todo)
-            this.todoes[this.todoes.indexOf(x => x.id === todo.id)] = todo
+            this.todoes[ix] = data.data.data[0]
             t.isLoading = false
         },
         async deleteTodo(id){
@@ -52,7 +48,7 @@ export const useTodoesStore = defineStore("todo",{
             t.isLoading = false
         },
         async newTodo(todo) {
-            const data = await axios.post(`api/todoes/`, {todo, id_list: 1})
+            const data = await axios.post(`api/todoes/`, todo)
             if(data.data.result){
                 this.todoes.push(data.data.data[0])
             }
@@ -63,7 +59,7 @@ export const useTodoesStore = defineStore("todo",{
                 try {
                     const response = await axios.get('api/lists')
                     this.lists = response.data.data
-                    console.log(response)
+                    //console.log(response)
                 } catch (error) {
                     alert(error)
                     console.log(error)

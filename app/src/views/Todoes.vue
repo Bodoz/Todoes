@@ -2,7 +2,8 @@
   <div>
     <v-card
         class="mx-auto"
-        max-width="500"
+        max-width="600"
+        elevation="5"
     >
       <v-toolbar>
         <template v-slot:prepend>
@@ -12,8 +13,8 @@
         <template v-slot:append>
           <todo-form
               :todo="todo"
-              @update=""
-              @opened=""
+              @update="newTodo(todo)"
+              @opened="formOpened"
               icon="mdi-plus"
               title="Add a new to-do"
               size="default"
@@ -56,14 +57,14 @@
                   size="x-small"
                   variant="tonal"
                   color="orange"
-                  @change.stop="confirmDeleteTodo(todo.id)"
+                  @click.stop="confirmDeleteTodo(todo.id)"
               ></v-btn>
             </v-list-item-action>
           </template>
         </v-list-item>
       </v-list>
       <v-footer>
-        cose da far
+        cose da fare
       </v-footer>
     </v-card>
 
@@ -79,16 +80,22 @@ const todoesStore = useTodoesStore()
 export default {
   components: {TodoForm},
   data: () => ({
-    //
+    emptyTodo: {
+      todo: '',
+      done: false,
+      id_list: '',
+    },
+    todo: null,
   }),
   computed: {
     ...mapState(useTodoesStore, ['todoes']),
+    //
   },
   methods: {
     ...mapActions(useTodoesStore, ['updateTodo', 'deleteTodo', 'newTodo']),
 
     confirmDeleteTodo(id) {
-      confirm("u sure?") && this.deleteTodo(id)
+      (confirm("sei sicuro di cancellare questo to-do?")) && this.deleteTodo(id)
     },
     alert(){
       alert(...arguments)
@@ -97,11 +104,13 @@ export default {
     addTodo(){
       let todo = prompt("Digita il nuovo impegno: ")
       this.newTodo(todo)
+    },
+    formOpened() {
+      this.todo = {...this.emptyTodo}
     }
   },
   created() {
     todoesStore.fetchTodoes()
   },
 }
-
 </script>

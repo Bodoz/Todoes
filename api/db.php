@@ -20,6 +20,9 @@ function get_todoes() {
     $stmt = $db->prepare($sql);
     $stmt->execute();
     $todoes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($todoes as $k=>$t){
+        $todoes[$k]['done'] = boolval($todoes[$k]['done']);
+    }
 
     return $todoes;
 }
@@ -31,6 +34,7 @@ function get_todo($id) {
     $stmt->bindValue(':id', $id);
     $stmt->execute();
     $todo = $stmt->fetch(PDO::FETCH_ASSOC);
+    $todo['done'] = boolval($todo['done']);
 
     return $todo;
 }

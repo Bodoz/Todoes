@@ -39,7 +39,7 @@
                   md="4"
               >
                 <v-select
-                    v-model="todo.list_id"
+                    v-model="todo.id_list"
                     :items="lists"
                     item-title="list"
                     item-value="id"
@@ -112,30 +112,20 @@ export default {
   computed: {
     ...mapState(useTodoesStore, ['todoes', 'lists']),
     dataVerified(){
-      return ths.todo.todo.trim() !== '' && this.todo.id_list > 0
+      return this.todo.todo.trim() !== '' && this.todo.id_list > 0
     }
   },
   methods: {
-  //  ...mapActions(useTodoesStore, ['']),
     saveTodo(){
-      let ix = this.todoes.indexOf(x => x.id === this.id)
-      for (ix in this.todoes) if(this.todoes[ix].id === this.id) break;
-      this.todoes[ix].todo = this.local_todo
-      this.todoes[ix].list_id = this.local_list_id
-      todoesStore.updateTodo(this.id)
-      this.dialog = false
+      if(this.dataVerified){
+        this.todo.todo = this.todo.todo.trim()
+        this.$emit('update')
+        this.dialog = false
+      }
     }
   },
-  mounted() {
-    this.local_todo =this.todo
-    this.local_list_id = this.list_id
-  },
-  created() {
+  beforeMount() {
     todoesStore.fetchLists()
   },
 }
 </script>
-
-<style scoped>
-
-</style>
