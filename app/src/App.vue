@@ -16,16 +16,22 @@
           </v-sheet>
         </v-container>
       </v-main>
+    <login-form
+      :show="show_login"
+    ></login-form>
   </v-app>
 </template>
 
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import LoginForm from './components/LoginForm.vue'
 
 export default{
+  components: { LoginForm },
   data() {
     return {
+      show_login: true,
       links: [
         {to: "/", text: "Home"},
         {to: "/about", text: "About"},

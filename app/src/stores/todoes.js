@@ -28,11 +28,11 @@ export const useTodoesStore = defineStore("todo",{
                 console.log(error)
             }
         },
-        async updateTodo(id) {
-            const ix = this.todoes.findIndex(x => x.id === id)
+        async updateTodo(todo) {
+            const ix = this.todoes.findIndex(x => x.id === todo.id)
             const t = this.todoes[ix]
             t.isLoading = true
-            const data = await axios.put(`api/todoes/${id}`, t)
+            const data = await axios.put(`api/todoes/${todo.id}`, todo)
             this.todoes[ix] = data.data.data[0]
             t.isLoading = false
         },

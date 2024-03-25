@@ -27,21 +27,21 @@
 
       <v-list>
         <v-list-item
-            v-for="todo in todoes"
-            @click="todo.done=!todo.done; updateTodo(todo.id)"
-            :disabled="todo.isLoading"
-            :loading="todo.isLoading"
+            v-for="t in todoes"
+            @click="t.done=!t.done; updateTodo(t)"
+            :disabled="t.isLoading"
+            :loading="t.isLoading"
         >
           <template v-slot:prepend>
               <v-checkbox-btn
-                  v-model="todo.done"
-                  @change="updateTodo(todo.id)"
+                  v-model="t.done"
+                  @change="updateTodo(t)"
               ></v-checkbox-btn>
           </template>
 
-          <v-list-item-title><b>{{ todo.todo }}</b> (<i>{{ todo.list }}</i>)</v-list-item-title>
+          <v-list-item-title><b>{{ t.todo }}</b> (<i>{{ t.list }}</i>)</v-list-item-title>
           <v-progress-linear
-            v-if="todo.isLoading"
+            v-if="t.isLoading"
             color="primary"
             indeterminate></v-progress-linear>
 
@@ -49,22 +49,23 @@
             <v-list-item-action end>
               <todo-form
                   :todo="todo"
-                  @update="updateTodo(todo.id)"
+                  @update="updateTodo(todo)"
+                  @opened="formOpened(t)"
               ></todo-form>
 
               <v-btn
                   icon="mdi-delete"
                   size="x-small"
                   variant="tonal"
-                  color="orange"
-                  @click.stop="confirmDeleteTodo(todo.id)"
+                  color="red"
+                  @click.stop="confirmDeleteTodo(t.id)"
               ></v-btn>
             </v-list-item-action>
           </template>
         </v-list-item>
       </v-list>
       <v-footer>
-        cose da fare
+        elenchi di cose da fare
       </v-footer>
     </v-card>
 
@@ -105,8 +106,12 @@ export default {
       let todo = prompt("Digita il nuovo impegno: ")
       this.newTodo(todo)
     },
-    formOpened() {
-      this.todo = {...this.emptyTodo}
+    formOpened(t) {
+      if(t){
+        this.todo = {...t}
+      }else{
+        this.todo = {...this.emptyTodo}
+      }
     }
   },
   created() {
