@@ -5,6 +5,53 @@ header('Content-type: application/json; charset=UTF-8');
 
 //sleep(1);
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///  U S E R S
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+$f3->route(
+    'POST /users/authorize',
+    function ($f3, $params) {
+        $data = json_decode(file_get_contents('php://input'), true);
+        if ($data['username'] != '' and $data['password'] != '') {
+            if ($data['username'] == 'admin' and $data['password'] == '1234') {
+                $r = [
+                    'result' => true,
+                    'data' => [
+                        'id' => 1,
+                        'username' => 'admin',
+                        'role' => 'admin',
+                    ],
+                    'msg' => 'you are logged in'
+                ];
+                $_SESSION['user'] = 1;
+            }else {
+                $r = [
+                    'result' => false,
+                    'data' => [
+                        'username' => false,
+                        'role' => false,
+                    ],
+                    'msg' => 'Ok'
+                ];
+                unset($_SESSION['user']);
+            }
+        } else {
+            $r =  [
+                'result' => false,
+                'data' => [],
+                'msg' => 'username or password empty, logged out'
+            ];
+            unset($_SESSION['user']);
+        }
+        echo json_encode($r);
+    }
+);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///  T O D O E S
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 //Elenco dei todo
 $f3->route(
     'GET /todoes',

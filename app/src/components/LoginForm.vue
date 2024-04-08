@@ -3,12 +3,13 @@
     <v-dialog
         max-width="600"
         persistent
-        v-model="dialog"
+        v-model="show_login"
     >
       <v-card
           prepend-icon="mdi-account"
           title="Login"
       >
+        <v-card-text>
         <v-form v-model="valid">
           <v-container>
             <v-row>
@@ -43,11 +44,22 @@
             </v-row>
           </v-container>
         </v-form>
-        <v-card-actions class="px-4 pb-5">
+        </v-card-text>
+        <v-card-actions class="px-10 pb-6">
           <v-spacer></v-spacer>
           <v-btn
               type="submit"
+              variant="elevated"
+              class="px-4 mr-3"
+              @click="cancel"
+          >Annulla</v-btn>
+          <v-btn
+              type="submit"
               color="primary"
+              variant="elevated"
+              class="px-4"
+              @click="login"
+              :disabled="!valid"
           >Login</v-btn>
         </v-card-actions>
       </v-card>
@@ -55,6 +67,9 @@
   </div>
 </template>
 <script>
+import {mapActions, mapState, mapWritableState} from "pinia";
+import {useUsersStore} from "@/stores/users.js";
+
 export default {
   props: {
     show: Boolean,
@@ -77,9 +92,19 @@ export default {
     ],
   }),
   computed: {
-    dialog() {
-      return this.show
+    ...mapState(useUsersStore, ['user']),
+    ...mapWritableState(useUsersStore, ['show_login']),
+  },
+  methods: {
+    ...mapActions(useUsersStore, ['authorize']),
+    login(){
+      if(this.valid){
+        this.authorize({username: this.username, password: this.password})
+      }
+    },
+    cancel(){
+      this.show_login = false
     }
-  }
+  },
 }
 </script>

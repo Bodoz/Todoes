@@ -19,10 +19,7 @@
       </v-container>
     </v-main>
 
-    <LoginForm
-        :show="show_login"
-    >
-    </LoginForm>
+    <LoginForm></LoginForm>
   </v-app>
 </template>
 
