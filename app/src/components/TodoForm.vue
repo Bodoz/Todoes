@@ -79,7 +79,6 @@
 <script>
 import {mapActions, mapState} from "pinia";
 import {useTodoesStore} from "@/stores/todoes.js";
-import {id} from "vuetify/locale";
 
 const todoesStore = useTodoesStore()
 export default {

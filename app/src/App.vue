@@ -17,7 +17,6 @@
       <v-container>
         <v-sheet class="ma-2 pa-2">
           <RouterView />
-
         </v-sheet>
       </v-container>
     </v-main>
