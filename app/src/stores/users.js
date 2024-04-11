@@ -5,7 +5,7 @@ import axios from "axios"
 export const useUsersStore = defineStore("user",{
     state: () => ({
         show_login: true,
-        user: {},
+        user: null,
     }),
     actions: {
         async authorize(credentials) {
@@ -21,5 +21,16 @@ export const useUsersStore = defineStore("user",{
                 console.log(error)
             }
         },
+        async authorized(){
+            try{
+                const data = await axios.get('api/users/authorized')
+                let user = data.data.data
+                console.log(data.data)
+                this.user = user
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
+        }
     },
 })

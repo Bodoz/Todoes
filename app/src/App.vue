@@ -1,6 +1,9 @@
 <template>
   <v-app>
     <v-app-bar title="Todo List">
+      <v-btn
+          @click="login"
+      >{{ logged }}</v-btn>
       <v-tabs>
         <v-tab
             color="indigo"
@@ -25,6 +28,8 @@
 
 <script>
 import LoginForm from './components/LoginForm.vue'
+import {mapActions, mapState, mapWritableState} from "pinia";
+import {useUsersStore} from "@/stores/users.js";
 
 export default {
   components: { LoginForm },
@@ -37,6 +42,27 @@ export default {
         {to: "/todoes", text: "Todoes"},
       ]
     }
+  },
+  computed: {
+    logged() {
+      return this.user ? "Logout" : "Login"
+    },
+    ...mapState(useUsersStore, ['user', 'show_login']),
+    ...mapWritableState(useUsersStore, ['show_login']),
+  },
+  methods: {
+    ...mapActions(useUsersStore, ['authorized', 'authorize']),
+
+    login() {
+      if (this.user){
+        this.authorize()
+      } else {
+        this.show_login = true
+      }
+    },
+  },
+  beforeMount() {
+    this.authorized()
   }
 }
 </script>

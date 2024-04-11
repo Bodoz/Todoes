@@ -1,7 +1,9 @@
 <?php
+header('Content-type: application/json; charset=UTF-8');
+
+session_start();
 $f3 = require('lib/base.php');
 require_once "db.php";
-header('Content-type: application/json; charset=UTF-8');
 
 //sleep(1);
 
@@ -10,10 +12,30 @@ header('Content-type: application/json; charset=UTF-8');
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 $f3->route(
+    'GET /users/authorized',
+    function ($f3, $params) {
+        if ( isset($_SESSION['user'])){
+            $r = [
+                'result' => true,
+                'data' => $_SESSION['user'],
+                'msg' => 'you are logged in'
+            ];
+        }else {
+            $r = [
+                'result' => false,
+                'data' => false,
+                'msg' => 'you are NOT logged in'
+            ];
+        }
+        echo json_encode($r);
+    }
+);
+
+$f3->route(
     'POST /users/authorize',
     function ($f3, $params) {
         $data = json_decode(file_get_contents('php://input'), true);
-        if ($data['username'] != '' and $data['password'] != '') {
+        if ($data and $data['username'] != '' and $data['password'] != '') {
             if ($data['username'] == 'admin' and $data['password'] == '1234') {
                 $r = [
                     'result' => true,
@@ -24,22 +46,19 @@ $f3->route(
                     ],
                     'msg' => 'you are logged in'
                 ];
-                $_SESSION['user'] = 1;
+                $_SESSION['user'] = $r['data'];
             }else {
                 $r = [
                     'result' => false,
-                    'data' => [
-                        'username' => false,
-                        'role' => false,
-                    ],
-                    'msg' => 'Ok'
+                    'data' => null,
+                    'msg' => 'username or password empty, logged out'
                 ];
                 unset($_SESSION['user']);
             }
         } else {
             $r =  [
                 'result' => false,
-                'data' => [],
+                'data' => null,
                 'msg' => 'username or password empty, logged out'
             ];
             unset($_SESSION['user']);
