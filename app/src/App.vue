@@ -47,7 +47,7 @@ export default {
     logged() {
       return this.user ? "Logout" : "Login"
     },
-    ...mapState(useUsersStore, ['user', 'show_login']),
+    ...mapState(useUsersStore, ['user']),
     ...mapWritableState(useUsersStore, ['show_login']),
   },
   methods: {
