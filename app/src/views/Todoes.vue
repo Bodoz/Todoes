@@ -90,7 +90,6 @@ export default {
   }),
   computed: {
     ...mapState(useTodoesStore, ['todoes']),
-    //
   },
   methods: {
     ...mapActions(useTodoesStore, ['updateTodo', 'deleteTodo', 'newTodo']),

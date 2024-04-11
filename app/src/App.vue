@@ -35,7 +35,6 @@ export default {
   components: { LoginForm },
   data() {
     return {
-      show_login: true,
       links: [
         {to: "/", text: "Home"},
         {to: "/about", text: "About"},

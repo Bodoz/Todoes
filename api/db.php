@@ -8,7 +8,7 @@ function get_lists() {
     $sql = "SELECT * FROM lists ORDER BY list";
     $stmt = $db->prepare($sql);
     $stmt->execute();
-    $todoes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $todoes = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
     return $todoes;
 }

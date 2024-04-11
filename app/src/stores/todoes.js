@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 
 import axios from "axios"
-import {tr} from "vuetify/locale";
 
 let loadingLists = false
 
