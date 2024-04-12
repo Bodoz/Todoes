@@ -2,6 +2,38 @@
 
 $db = new PDO("sqlite:./todoes.sqlite", PDO::FETCH_ASSOC);
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///  U S E R S
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+function get_user($username){
+    global $db;
+
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($user) {
+        $sql = "SELECT * FROM roles R 
+            LEFT JOIN user_roles UR ON UR.role_id = R.id
+            WHERE UR.user_id = :user_id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $user['id']);
+        $stmt->execute();
+        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $user['roles'] = $roles;
+    }
+
+    return $user;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///  L I S T S
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 function get_lists() {
     global $db;
 
@@ -12,6 +44,10 @@ function get_lists() {
 
     return $todoes;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///  T O D O E S
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 function get_todoes() {
     global $db;

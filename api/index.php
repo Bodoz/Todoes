@@ -2,6 +2,7 @@
 header('Content-type: application/json; charset=UTF-8');
 
 session_start();
+
 $f3 = require('lib/base.php');
 require_once "db.php";
 
@@ -36,14 +37,12 @@ $f3->route(
     function ($f3, $params) {
         $data = json_decode(file_get_contents('php://input'), true);
         if ($data and $data['username'] != '' and $data['password'] != '') {
-            if ($data['username'] == 'admin' and $data['password'] == '1234') {
+            $user = get_user($data['username']);
+            if ($user and md5($data['password'] == $user['password'])) {
+                unset($user['password']);
                 $r = [
                     'result' => true,
-                    'data' => [
-                        'id' => 1,
-                        'username' => 'admin',
-                        'role' => 'admin',
-                    ],
+                    'data' => $user,
                     'msg' => 'you are logged in'
                 ];
                 $_SESSION['user'] = $r['data'];
