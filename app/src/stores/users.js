@@ -6,6 +6,7 @@ export const useUsersStore = defineStore("user",{
     state: () => ({
         show_login: true,
         user: null,
+        next: null, //where to go to after login authentication
     }),
     actions: {
         async authorize(credentials) {

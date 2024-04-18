@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     logged() {
-      return this.user ? "Logout" : "Login"
+      return this.user ? "Logout, welcome "+ this.user.username : "Login"
     },
     ...mapState(useUsersStore, ['user']),
     ...mapWritableState(useUsersStore, ['show_login']),
