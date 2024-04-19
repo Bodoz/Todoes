@@ -31,20 +31,16 @@ const router = createRouter({
   ]
 })
 
-router.beforeResolve((to, from) => {
+router.beforeEach(async(to, from) => {
   let store = useUsersStore()
-  console.log('user:', store.user.username)
+  //console.log('user:', store.user?.username)
 
-  if(to.meta?.requiresAuth){
-    if(store.user){
-      //noop
-      return true
-    }else{
-      store.next = to
-      store.show_login = true
-      return false
-      //return '/login'
-    }
+  if(to.meta?.requiresAuth && !store.user){
+    store.next = to
+    store.show_login = true
+    return false
+  }else{
+    return true
   }
 })
 

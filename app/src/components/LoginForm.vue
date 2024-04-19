@@ -103,6 +103,8 @@ export default {
       }
     },
     cancel(){
+      this.username = ''
+      this.password = ''
       this.show_login = false
     }
   },

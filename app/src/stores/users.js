@@ -12,11 +12,11 @@ export const useUsersStore = defineStore("user",{
         async authorize(credentials) {
             console.log(credentials)
             try{
-                const data = await axios.post('api/users/authorize', credentials)
-                let user = data.data.data
-                console.log(data.data)
-                this.user = user
+                const response = await axios.post('api/users/authorize', credentials)
+                this.user = response.data.data
                 this.show_login = false
+                router.push(this.next || '/')
+                this.next = undefined
             } catch(error) {
                 alert(error)
                 console.log(error)
@@ -24,10 +24,8 @@ export const useUsersStore = defineStore("user",{
         },
         async authorized(){
             try{
-                const data = await axios.get('api/users/authorized')
-                let user = data.data.data
-                console.log(data.data)
-                this.user = user
+                const response = await axios.get('api/users/authorized')
+                this.user = response.data.data
             } catch(error) {
                 alert(error)
                 console.log(error)
